@@ -4,12 +4,12 @@ import json
 import random
 import sys
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 import paho.mqtt.client as mqtt
 
 BROKER_HOST = "localhost"
 BROKER_PORT = 1883
-SENSOR_COUNT = 1000
+SENSOR_COUNT = 10
 
 # Global state
 client = None
@@ -82,7 +82,7 @@ async def simulate_sensor(sensor_id: int):
     topic = f"grid/sensors/{device_id}"
     
     while True:
-        timestamp = datetime.utcnow().isoformat()
+        timestamp = datetime.now(timezone.utc).isoformat()
         voltage = random.gauss(230, 2)  # ~230V nominal with ±2V noise
         current = random.gauss(4, 0.5)  # ~4A nominal
         temperature = random.gauss(35, 3)  # ~35°C
